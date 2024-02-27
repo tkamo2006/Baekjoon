@@ -1,3 +1,3 @@
 # Baekjoon
-Algorithm Study Repository Space using BaekjoonHub
+Algorithm Study Repository using BaekjoonHub
 
