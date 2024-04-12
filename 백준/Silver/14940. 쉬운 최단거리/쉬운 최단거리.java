@@ -10,7 +10,7 @@ public class Main {
     static int m;
     static int[][] arr;
     static int[][] distance;
-    static int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+    static int[][] directions = {{1,0},{0,1},{-1,0},{0,-1}};
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
