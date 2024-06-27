@@ -1,83 +1,84 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
     static int n;
+    static int cnt = 0;
+    static int[][] arr;
     static boolean[][] visit;
-    static boolean[][] map;
-    static int[][] direct = {{1,0}, {0,1}, {-1,0}, {0,-1}};
-    static Queue<int[]> queue;
-    static ArrayList<Integer> list;
-
+    static int[][] directs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
         n = Integer.parseInt(br.readLine());
 
+
+        arr = new int[n][n];
         visit = new boolean[n][n];
-        map = new boolean[n][n];
-        queue = new LinkedList<>();
-        list = new ArrayList<>();
-        StringTokenizer st;
-        int cnt = 1;
 
         for (int i = 0; i < n; i++) {
-            st = new StringTokenizer(br.readLine());
-            String s = st.nextToken();
+            String s = br.readLine();
             for (int j = 0; j < n; j++) {
-                if(s.charAt(j) == '1') {
-                    map[i][j] = true;
-                }                
+                arr[i][j] = s.charAt(j) - '0';
             }
         }
-
+        ArrayList<Integer> list = new ArrayList<>();
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                if(map[i][j] && !visit[i][j]){
-                    list.add(bfs(i,j));
+                if(arr[i][j] == 1 && !visit[i][j]){
+//                    list.add(bfs(i,j));
+                    cnt = 0;
+                    dfs(i,j);
+                    list.add(cnt);
                 }
             }
         }
 
         Collections.sort(list);
-        System.out.println(list.size());
-        for (int a : list) {
-            System.out.println(a);
+        System.out.println(list.size() );
+        for (int num : list){
+            System.out.println(num);
         }
-        
-        
     }
-    public static int bfs(int a, int b){
-        visit[a][b] = true;
-        queue.add(new int[]{a,b});
-        int cnt = 0;
-        while(!queue.isEmpty()){
-            int[] arr = queue.poll();
-            int x = arr[0];
-            int y = arr[1];
-            cnt ++;
 
-            for(int[] directs : direct){
-                int nx = directs[0] + x;
-                int ny = directs[1] + y;
-                if(isVaild(nx, ny) && !visit[nx][ny] && map[nx][ny]){
+    static int bfs(int i, int j) {
+        int count = 1;
+        Queue<int[]> q = new ArrayDeque<>();
+        q.offer(new int[]{i,j});
+        visit[i][j] = true;
+        while (!q.isEmpty()){
+            int[] xy = q.poll();
+            int x = xy[0];
+            int y = xy[1];
+            for(int[] direct : directs){
+                int nx = x + direct[0];
+                int ny = y + direct[1];
+                if(isValid(nx,ny)  && !visit[nx][ny] && arr[nx][ny] == 1){
+                    q.offer(new int[]{nx, ny});
                     visit[nx][ny] = true;
-                    queue.offer(new int[]{nx, ny});
+                    count++;
                 }
             }
         }
-        return cnt;
+        return count;
     }
-    
-    public static boolean isVaild(int nx, int ny){
-        return nx >=0 && ny >= 0 && nx < n && ny < n;
+
+    private static boolean isValid(int nx, int ny) {
+        return nx >= 0 && ny >= 0 && nx < n && ny < n;
     }
-    
+
+    static void dfs(int i, int j) {
+        visit[i][j] = true;
+        cnt++;
+        for(int[] direct : directs){
+            int nx = i + direct[0];
+            int ny = j + direct[1];
+            if(isValid(nx,ny)  && !visit[nx][ny] && arr[nx][ny] == 1){
+                dfs(nx,ny);
+            }
+        }
+    }
 }
