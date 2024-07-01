@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -70,9 +69,11 @@ public class Main {
             visit[x] = true;
 
             for(int[] xy : graph[x]){
-                if (cost[xy[0]] > cost[x] + xy[1]) {
-                    cost[xy[0]] = cost[x] + xy[1];
-                    pq.offer(new int[]{xy[0], cost[xy[0]]});
+                int node = xy[0];
+                int val = xy[1];
+                if (cost[node] > cost[x] + val) {
+                    cost[node] = cost[x] + val;
+                    pq.offer(new int[]{node, cost[node]});
                 }
             }
         }
